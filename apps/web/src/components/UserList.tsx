@@ -1,8 +1,15 @@
 import { getUsers } from '@/actions/users';
+import { UserListError } from '@/components/UserListError';
 import type { User } from '@/lib/types';
 
 export async function UserList() {
-  const users = await getUsers();
+  let users: User[];
+
+  try {
+    users = await getUsers();
+  } catch {
+    return <UserListError />;
+  }
 
   return (
     <ul className="divide-y divide-gray-100">

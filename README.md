@@ -20,3 +20,28 @@ Implement the following feature using production-grade patterns:
 - **Core:** React, Next.js 14+ (App Router)
 - **UI:** Radix UI, Tailwind CSS
 - **Infrastructure:** Docker Compose, pnpm, Turborepo
+
+---
+
+## How to run
+
+### Prerequisites
+- [Node.js 20+](https://nodejs.org/) and [pnpm](https://pnpm.io/installation)
+
+### Steps
+
+```bash
+# 1. Copy the environment template
+cp apps/web/.env.example apps/web/.env
+
+# 2. Install dependencies
+pnpm install
+
+# 3. Start the development server
+pnpm dev
+```
+
+The app will be available at **http://localhost:3000**.
+
+> The app calls the backend API at `http://localhost:3001` by default.
+> Make sure the backend is running before using features that fetch profiles.

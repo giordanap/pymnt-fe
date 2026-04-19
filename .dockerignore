@@ -4,3 +4,6 @@ node_modules
 dist
 build
 .pnpm-store
+
+# Local environment secrets
+apps/web/.env

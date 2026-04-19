@@ -1,18 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
+import { getUsers } from '@/actions/users';
+import type { UsersResponse } from '@/lib/types';
+import { UserList } from '@/components/UserList';
+import { UserListSkeleton } from '@/components/UserListSkeleton';
 
-interface UsersDialogProps {
-  children?: React.ReactNode;
-}
-
-export function UsersDialog({ children }: UsersDialogProps) {
+export function UsersDialog() {
   const [open, setOpen] = useState(false);
+  const [usersPromise, setUsersPromise] = useState<Promise<UsersResponse> | null>(null);
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
+      setUsersPromise(getUsers());
+    }
+    setOpen(isOpen);
+  };
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Trigger asChild>
         <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
           View Users
@@ -20,9 +28,9 @@ export function UsersDialog({ children }: UsersDialogProps) {
       </Dialog.Trigger>
 
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
 
-        <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md rounded-lg bg-white p-6 shadow-xl focus:outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+        <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md rounded-lg bg-white p-6 shadow-xl focus:outline-none">
           <div className="flex items-center justify-between mb-4">
             <Dialog.Title className="text-lg font-semibold text-gray-900">
               Users
@@ -33,9 +41,10 @@ export function UsersDialog({ children }: UsersDialogProps) {
             </Dialog.Close>
           </div>
 
-          {/* FE-P3: children will be a <UserList /> Server Component wrapped in <Suspense> */}
-          {children ?? (
-            <p className="text-sm text-gray-500">User list will be available in the next phase.</p>
+          {usersPromise && (
+            <Suspense fallback={<UserListSkeleton />}>
+              <UserList promise={usersPromise} />
+            </Suspense>
           )}
         </Dialog.Content>
       </Dialog.Portal>

@@ -7,4 +7,6 @@ services:
       dockerfile: apps/web/Dockerfile
     ports:
       - "3000:3000"
-    # No runtime environment variables are required — the app fetches from a public API.
+    environment:
+      # External users API. Defaults to JSONPlaceholder when not set.
+      NEXT_PUBLIC_USERS_API_URL: ${NEXT_PUBLIC_USERS_API_URL:-https://jsonplaceholder.typicode.com/users}

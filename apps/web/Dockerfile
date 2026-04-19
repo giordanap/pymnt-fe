@@ -1,23 +1,24 @@
 FROM node:20-alpine
 
-RUN npm install -g pnpm@8.15.1
+RUN npm install -g pnpm@8.15.0
 
 WORKDIR /app
 
-# Copiar manifests primero para aprovechar cache
+# Copy workspace manifests first to maximise Docker layer cache reuse.
+# Dependencies are only reinstalled when these files change.
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps/web/package.json ./apps/web/package.json
 
-# Instalar dependencias del workspace web
+# Install workspace dependencies for the web app only.
 RUN pnpm install --frozen-lockfile --filter web...
 
-# Copiar código fuente, sin node_modules gracias al .dockerignore
+# Copy application source (node_modules excluded via .dockerignore).
 COPY apps/web/ ./apps/web/
 
-# Build de Next
+# Build the Next.js production bundle.
 RUN pnpm --filter web run build
 
 EXPOSE 3000
 
-# Start del servidor de producción
+# Start the production server.
 CMD ["pnpm", "--filter", "web", "run", "start"]

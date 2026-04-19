@@ -59,5 +59,5 @@ pnpm dev
 
 The app will be available at **http://localhost:3000**.
 
-> The app calls the backend API at `http://localhost:3001` by default.
-> Make sure the backend is running before using features that fetch profiles.
+> The users modal fetches data from `https://jsonplaceholder.typicode.com/users` as specified by the challenge.
+> No backend service is required to run this application.

@@ -25,10 +25,26 @@ Implement the following feature using production-grade patterns:
 
 ## How to run
 
-### Prerequisites
-- [Node.js 20+](https://nodejs.org/) and [pnpm](https://pnpm.io/installation)
+### Option A — Docker Compose (recommended)
 
-### Steps
+#### Prerequisites
+- [Docker](https://docs.docker.com/get-docker/) and Docker Compose
+
+```bash
+docker compose up --build
+```
+
+The app will be available at **http://localhost:3000**.
+
+To stop:
+```bash
+docker compose down
+```
+
+### Option B — Local development (pnpm)
+
+#### Prerequisites
+- [Node.js 20+](https://nodejs.org/) and [pnpm](https://pnpm.io/installation)
 
 ```bash
 # 1. Copy the environment template

@@ -7,3 +7,4 @@ build
 
 # Local environment secrets
 apps/web/.env
+apps/web/node_modules
